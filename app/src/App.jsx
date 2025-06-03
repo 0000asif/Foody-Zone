@@ -1,17 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 export const BASE_URL = 'http://localhost:9000/';
 
 const App = () => {
-  const [Data, setData] = useState('null');
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const FoodData = async () => {
-    const response = await fetch(BASE_URL);
-    const json = await response.json();
-    setData(json);
-  };
-  FoodData();
+  useEffect(() => {
+    const FoodData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(BASE_URL);
+        const json = await response.json();
+        setData(json);
+        setLoading(false);
+      } catch (error) {
+        setError('Something went wrong');
+        setLoading(false);
+      }
+    };
+    FoodData();
+  }, []);
+
+  console.log(data);
+
+  if (error) return <div>{error}</div>;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>
@@ -32,7 +48,7 @@ const App = () => {
         </FilterContainer>
       </Container>
 
-      <SearchResult>{Data.name}</SearchResult>
+      <SearchResult></SearchResult>
     </>
   );
 };
