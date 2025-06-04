@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import SearchResult from './components/SearchResults/SearchResult';
 
-export const BASE_URL = 'http://localhost:9000/';
+export const BASE_URL = 'http://localhost:9000';
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -48,15 +49,14 @@ const App = () => {
         </FilterContainer>
       </Container>
 
-      <SearchResult></SearchResult>
+      <SearchResult data={data} />
     </>
   );
 };
 
 export default App;
 
-const Container = styled.div`
-  background: #323334;
+export const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
 `;
@@ -66,7 +66,6 @@ const TopContainer = styled.section`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  height: 140px;
   .input {
     background: #323334;
     color: white;
@@ -74,7 +73,7 @@ const TopContainer = styled.section`
     font-size: 16px;
     border: 1px solid red;
     border-radius: 5px;
-    padding: 6px 12px;
+    padding: 8px 15px;
     border: 1 px solid #ff0909;
     &::placeholder {
       color: white;
@@ -87,8 +86,7 @@ const FilterContainer = styled.section`
   gap: 10px;
   justify-content: center;
   align-items: center;
-  padding: 16px;
-  height: 140px;
+  height: 120px;
 `;
 export const Button = styled.button`
   background: #ff4343;
@@ -99,7 +97,6 @@ export const Button = styled.button`
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
-  padding: 10px 25px;
+  padding: 6px 12px;
 `;
 
-const SearchResult = styled.section``;
