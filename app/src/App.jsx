@@ -138,6 +138,11 @@ const TopContainer = styled.section`
       color: white;
     }
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height : 100px;
+  }
 `;
 
 const FilterContainer = styled.section`
@@ -148,7 +153,8 @@ const FilterContainer = styled.section`
   height: 120px;
 `;
 export const Button = styled.button`
-  background: #ff4343;
+  background: ${({ isSelected }) =>
+    isSelected ? 'rgb(216, 10, 10)' : '#ff4343'};
   outline: 1px solid #ff4343;
   border: none;
   color: white;
