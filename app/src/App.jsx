@@ -8,6 +8,8 @@ const App = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [filterdata, setFilterdata] = useState(null);
+  const [selectbtn, setSelectbtn] = useState(null);
 
   useEffect(() => {
     const FoodData = async () => {
@@ -15,7 +17,10 @@ const App = () => {
       try {
         const response = await fetch(BASE_URL);
         const json = await response.json();
+
         setData(json);
+
+        setFilterdata(json);
         setLoading(false);
       } catch (error) {
         setError('Something went wrong');
@@ -25,7 +30,51 @@ const App = () => {
     FoodData();
   }, []);
 
-  console.log(data);
+  const filter = e => {
+    const value = e.target.value;
+    console.log(value);
+    if (value) {
+      const filterData = data?.filter(item =>
+        item.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilterdata(filterData);
+    } else {
+      setFilterdata(data);
+    }
+  };
+
+  const filterbtn = type => {
+    if (type == 'all') {
+      setFilterdata(data);
+      setSelectbtn('all');
+      return;
+    }
+
+    const filterbtn = data?.filter(item =>
+      item.type.toLowerCase().includes(type.toLowerCase())
+    );
+    setFilterdata(filterbtn);
+    setSelectbtn(type);
+  };
+
+  const filterbutton = [
+    {
+      name: 'All',
+      type: 'all',
+    },
+    {
+      name: 'Breakfast',
+      type: 'Breakfast',
+    },
+    {
+      name: 'Lunch',
+      type: 'Lunch',
+    },
+    {
+      name: 'Dinner',
+      type: 'Dinner',
+    },
+  ];
 
   if (error) return <div>{error}</div>;
   if (loading) return <div>Loading...</div>;
@@ -38,18 +87,28 @@ const App = () => {
             <img src="/logo.svg" alt="" />
           </div>
           <div className="search">
-            <input className="input" type="text" placeholder="Search Here..." />
+            <input
+              className="input"
+              onKeyUp={filter}
+              type="text"
+              placeholder="Search Here..."
+            />
           </div>
         </TopContainer>
         <FilterContainer>
-          <Button>All</Button>
-          <Button>Breakfast</Button>
-          <Button>Lunch</Button>
-          <Button>Dinner</Button>
+          {filterbutton.map(button => (
+            <Button
+              key={button.name}
+              onClick={() => filterbtn(button.type)}
+              isSelected={button.type === selectbtn}
+            >
+              {button.name}
+            </Button>
+          ))}
         </FilterContainer>
       </Container>
 
-      <SearchResult data={data} />
+      <SearchResult data={filterdata} />
     </>
   );
 };
@@ -98,5 +157,7 @@ export const Button = styled.button`
   cursor: pointer;
   border-radius: 5px;
   padding: 6px 12px;
+  &:hover {
+    background: rgb(216, 10, 10);
+  }
 `;
-

@@ -13,8 +13,11 @@ const SearchResult = ({ data }) => {
                 <img src={BASE_URL + item.image} alt="img" />
               </div>
               <div className="content">
-                <h3>{item.name}</h3>
-                <p>{item.text}</p>
+                <div className="info">
+                  <h3>{item.name}</h3>
+                  <p>{item.text}</p>
+                </div>
+
                 <Button>${item.price.toFixed(2)}</Button>
               </div>
             </FoodCard>
@@ -56,4 +59,22 @@ const FoodCard = styled.section`
   border-radius: 20px;
   display: flex;
   padding: 8px;
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:end;
+  }
+  h3 {
+    font-size: 16px;
+    margin-top: 4px;
+  }
+  p {
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+  button {
+    font-size: 12px;
+  }
 `;
